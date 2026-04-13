@@ -19,8 +19,8 @@ Script Purpose:
 CREATE OR ALTER PROCEDURE bronze.load_bronze AS
 BEGIN 
 	
-	DECLARE @start_time DATETIME, @end_time DATETIME, @start_time_bronze DATETIME, @end_time_bronze DATETIME;
-	SET @start_time_bronze = GETDATE();
+	DECLARE @start_time DATETIME, @end_time DATETIME, @batch_start_time DATETIME, @batch_end_time DATETIME;
+	SET @batch_start_time = GETDATE();
 	BEGIN TRY
 		PRINT '=============================================';
 		PRINT 'Loading Bronze Layer';
@@ -142,10 +142,10 @@ BEGIN
 		SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds'
 
-		SET @end_time_bronze = GETDATE()
+		SET @batch_end_time = GETDATE()
 		PRINT '=============================================';
 		PRINT '>> Loading Bronze Layer is Completed' 
-		PRINT '>> Total Load Duration: ' + CAST(DATEDIFF(second, @start_time_bronze, @end_time_bronze) AS NVARCHAR) + ' seconds'
+		PRINT '>> Total Load Duration: ' + CAST(DATEDIFF(second, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconds'
 		PRINT '=============================================';
 
 
