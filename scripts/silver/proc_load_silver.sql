@@ -1,7 +1,6 @@
 /*
-===============================================================================
 Stored Procedure: Load Silver Layer (Bronze -> Silver)
-===============================================================================
+
 Script Purpose:
     This stored procedure performs the ETL (Extract, Transform, Load) process
 	to populate the 'silver' schema tables from the 'bronze' schema. 
@@ -15,7 +14,7 @@ Parameters:
 
 Usage Example:
     EXEC silver.load_silver;
-===============================================================================
+
 */
 
 CREATE OR ALTER PROCEDURE silver.load_silver AS
@@ -23,13 +22,13 @@ BEGIN
 	DECLARE @start_time DATETIME, @end_time DATETIME, @batch_start_time DATETIME, @batch_end_time DATETIME; 
 	BEGIN TRY
 		SET @batch_start_time = GETDATE()
-		PRINT '================================================';
+		PRINT ' ';
 		PRINT 'Loading Silver Layer';
-		PRINT '================================================';
+		PRINT ' ';
 
-		PRINT '------------------------------------------------';
+		PRINT ' ';
 		PRINT 'Loading CRM Tables';
-		PRINT '------------------------------------------------';
+		PRINT ' ';
 
 		SET @start_time = GETDATE();
 		PRINT '>> Truncating Table: silver.crm_cust_info';
@@ -70,7 +69,7 @@ BEGIN
 			)t WHERE flag_count = 1
 		SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds'
-		PRINT '---------------------------------------------';
+		PRINT ' ';
 
 
 		SET @start_time = GETDATE();
@@ -108,7 +107,7 @@ BEGIN
 		FROM bronze.crm_prd_info
 		SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds'
-		PRINT '---------------------------------------------';
+		PRINT ' ';
 
 
 		SET @start_time = GETDATE();
@@ -164,9 +163,9 @@ BEGIN
 		SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds'
 
-		PRINT '---------------------------------------------';
+		PRINT ' ';
 		PRINT 'Loading ERP Tables'
-		PRINT '---------------------------------------------';
+		PRINT ' ';
 
 		SET @start_time = GETDATE();
 		PRINT '>> Truncating Table: silver.erp_cust_az12';
@@ -196,7 +195,7 @@ BEGIN
 		FROM bronze.erp_cust_az12
 		SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds'
-		PRINT '---------------------------------------------';
+		PRINT ' ';
 
 		SET @start_time = GETDATE();
 		PRINT '>> Truncating Table: silver.erp_loc_a101';
@@ -219,7 +218,7 @@ BEGIN
 		FROM bronze.erp_loc_a101 
 		SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds'
-		PRINT '---------------------------------------------';
+		PRINT ' ';
 
 		SET @start_time = GETDATE();
 		PRINT '>> Truncating Table: silver.erp_px_cat_g1v2';
@@ -240,20 +239,20 @@ BEGIN
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds'
 		
 		SET @batch_end_time = GETDATE()
-		PRINT '=============================================';
+		PRINT ' ';
 		PRINT '>> Loading Silver Layer is Completed' 
 		PRINT '>> Total Load Duration: ' + CAST(DATEDIFF(second, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconds'
-		PRINT '=============================================';
+		PRINT ' ';
 
 
 	END TRY
 	BEGIN CATCH
-		PRINT '=============================================';
+		PRINT ' ';
 		PRINT 'ERROR OCCURED DURING LOADING BRONZE LAYER';
 		PRINT 'Error Message' + ERROR_MESSAGE();
 		PRINT 'Error Message' + CAST(ERROR_NUMBER() AS NVARCHAR(50));
 		PRINT 'Error Message' + CAST(ERROR_STATE() AS NVARCHAR(50));
-		PRINT '=============================================';
+		PRINT ' ';
 	END CATCH
 END
 

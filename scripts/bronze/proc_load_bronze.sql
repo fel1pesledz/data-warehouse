@@ -1,7 +1,6 @@
 /*
-==============================================================================
 Stored Procedure: Load Bronze Layer (Source -> Bronze)
-==============================================================================
+
 Script Purpose:
 	This stored procedure loads data into the 'bronze' schema from external CSV
 	files. It performs the following actions:
@@ -22,14 +21,14 @@ BEGIN
 	DECLARE @start_time DATETIME, @end_time DATETIME, @batch_start_time DATETIME, @batch_end_time DATETIME;
 	SET @batch_start_time = GETDATE();
 	BEGIN TRY
-		PRINT '=============================================';
+		PRINT ' ';
 		PRINT 'Loading Bronze Layer';
-		PRINT '=============================================';
+		PRINT ' ';
 
 
-		PRINT '---------------------------------------------';
+		PRINT ' ';
 		PRINT 'Loading CRM Tables'
-		PRINT '---------------------------------------------';
+		PRINT ' ';
 
 
 		SET @start_time = GETDATE();
@@ -38,7 +37,7 @@ BEGIN
 
 		PRINT '>> Inserting Data Into: bronze.crm_cust_info';
 		BULK INSERT bronze.crm_cust_info
-		FROM '/datasets/source_crm/cust_info.csv'
+		FROM '/home/sledz/Documentos/Projetos/data-warehouse/datasets/source_crm/cust_info.csv'
 
 		WITH (
 			FIRSTROW = 2, 
@@ -47,7 +46,7 @@ BEGIN
 		);
 		SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds'
-		PRINT '---------------------------------------------';
+		PRINT ' ';
 
 
 		SET @start_time = GETDATE();
@@ -56,7 +55,7 @@ BEGIN
 
 		PRINT '>> Inserting Data Into: bronze.crm_prd_info';
 		BULK INSERT bronze.crm_prd_info
-		FROM '/datasets/source_crm/prd_info.csv'
+		FROM '/home/sledz/Documentos/Projetos/data-warehouse/datasets/source_crm/prd_info.csv'
 
 		WITH (
 			FIRSTROW = 2, 
@@ -65,7 +64,7 @@ BEGIN
 		);
 		SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds'
-		PRINT '---------------------------------------------';
+		PRINT ' ';
 
 
 		SET @start_time = GETDATE();
@@ -74,7 +73,7 @@ BEGIN
 
 		PRINT '>> Inserting Data Into: bronze.crm_sales_details';
 		BULK INSERT bronze.crm_sales_details
-		FROM '/datasets/source_crm/sales_details.csv'
+		FROM '/home/sledz/Documentos/Projetos/data-warehouse/datasets/source_crm/sales_details.csv'
 
 		WITH (
 			FIRSTROW = 2, 
@@ -85,9 +84,9 @@ BEGIN
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds'
 
 
-		PRINT '---------------------------------------------';
+		PRINT ' ';
 		PRINT 'Loading ERP Tables'
-		PRINT '---------------------------------------------';
+		PRINT ' ';
 
 
 		SET @start_time = GETDATE();
@@ -96,7 +95,7 @@ BEGIN
 
 		PRINT '>> Inserting Data Into: bronze.erp_cust_az12';
 		BULK INSERT bronze.erp_cust_az12
-		FROM '/datasets/source_erp/CUST_AZ12.csv'
+		FROM '/home/sledz/Documentos/Projetos/data-warehouse/datasets/source_erp/CUST_AZ12.csv'
 
 		WITH (
 			FIRSTROW = 2, 
@@ -105,7 +104,7 @@ BEGIN
 		);
 		SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds'
-		PRINT '---------------------------------------------';
+		PRINT ' ';
 
 
 		SET @start_time = GETDATE();
@@ -114,7 +113,7 @@ BEGIN
 
 		PRINT '>> Inserting Data Into: bronze.erp_loc_a101';
 		BULK INSERT bronze.erp_loc_a101
-		FROM '/datasets/source_erp/LOC_A101.csv'
+		FROM '/home/sledz/Documentos/Projetos/data-warehouse/datasets/source_erp/LOC_A101.csv'
 
 		WITH (
 			FIRSTROW = 2, 
@@ -123,7 +122,7 @@ BEGIN
 		);
 		SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds'
-		PRINT '---------------------------------------------';
+		PRINT ' ';
 
 
 		SET @start_time = GETDATE();
@@ -132,7 +131,7 @@ BEGIN
 
 		PRINT '>> Inserting Data Into: bronze.erp_px_cat_g1v2';
 		BULK INSERT bronze.erp_px_cat_g1v2
-		FROM '/datasets/source_erp/PX_CAT_G1V2.csv'
+		FROM '/home/sledz/Documentos/Projetos/data-warehouse/datasets/source_erp/PX_CAT_G1V2.csv'
 
 		WITH (
 			FIRSTROW = 2, 
@@ -143,19 +142,19 @@ BEGIN
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds'
 
 		SET @batch_end_time = GETDATE()
-		PRINT '=============================================';
+		PRINT ' ';
 		PRINT '>> Loading Bronze Layer is Completed' 
 		PRINT '>> Total Load Duration: ' + CAST(DATEDIFF(second, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconds'
-		PRINT '=============================================';
+		PRINT ' ';
 
 
 	END TRY
 	BEGIN CATCH
-		PRINT '=============================================';
+		PRINT ' ';
 		PRINT 'ERROR OCCURED DURING LOADING BRONZE LAYER';
 		PRINT 'Error Message' + ERROR_MESSAGE();
 		PRINT 'Error Message' + CAST(ERROR_NUMBER() AS NVARCHAR(50));
 		PRINT 'Error Message' + CAST(ERROR_STATE() AS NVARCHAR(50));
-		PRINT '=============================================';
+		PRINT ' ';
 	END CATCH
 END
